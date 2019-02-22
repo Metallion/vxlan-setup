@@ -6,6 +6,7 @@ WHEREAMI="$(cd "$(dirname $(readlink -f "$0"))" && pwd -P)"
 local_ip="192.168.1.226"
 remote_ip="192.168.1.191"
 vxlan_id="100"
+host_interface="eth0"
 
 bridge_name="br${vxlan_id}"
 
@@ -44,4 +45,4 @@ write_lxc_config "jefke" "${bridge_name}" "ee:ec:fa:e9:56:02"
 start_lxc_container "joske"
 start_lxc_container "jefke"
 
-create_vxlan_tunnel "${vxlan_id}" "${local_ip}" "${remote_ip}"
+create_vxlan_tunnel "${vxlan_id}" "${local_ip}" "${remote_ip}" "${host_interface}"

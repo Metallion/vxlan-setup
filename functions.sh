@@ -42,6 +42,7 @@ function create_vxlan_tunnel() {
   local vxlan_id="$1"
   local local_ip="$2"
   local remote_ip="$3"
+  local host_interface="$4"
 
   local vxlan_interface="vxlan${vxlan_id}"
 
@@ -49,7 +50,7 @@ function create_vxlan_tunnel() {
     $starting_step "Create VxLAN tunnel"
     ip link show "${vxlan_interface}" > /dev/null 2>&1
     $skip_step_if_already_done; set -xe
-    sudo ip link add "${vxlan_interface}" type vxlan id "${vxlan_id}" dstport 4789 local "${local_ip}" remote "${remote_ip}" dev eth0
+    sudo ip link add "${vxlan_interface}" type vxlan id "${vxlan_id}" dstport 4789 local "${local_ip}" remote "${remote_ip}" dev "${host_interface}"
     sudo ip link set "${vxlan_interface}" up
     sudo brctl addif "br${vxlan_id}" "${vxlan_interface}"
   ) ; prev_cmd_failed
